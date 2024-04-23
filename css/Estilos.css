@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; /* para que header y el nav estén encima de la escena */
+    z-index: 1000; 
 }
 
 /* Estilos para el encabezado */

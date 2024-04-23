@@ -10,7 +10,7 @@
 <body>
     <div class="menu">
         <div class="formulario">
-            <form action="" method="post">
+          <form action="" method="post" onsubmit="handleFormSubmit(event)">
               <label for="anio">Seleccione un periodo:</label>
               <select name="anio" id="anio">
                 <option value="0">Periodo Precámbrico</option>
@@ -32,7 +32,7 @@
     <a-entity>
       <a-plane rotation="-90 0 0" height="200" width="200" repeat="100 100" color="#3E8344"></a-plane>
     </a-entity>
-    <!-- cronometro -->
+  
     <a-assets>
       <a-asset-item id="maquina-modelo" src="Modelos/maquinadeltiempo.glb"></a-asset-item>
     </a-assets>
@@ -60,5 +60,59 @@
 
 
   </a-scene>
+  <audio id="audio-maquina" src="Audios/maquinatiempo.mp3"></audio>
+
 </body>
+<script src = "js/animacionMaquina.js"></script>
+<script>
+  function handleFormSubmit(event) {
+    event.preventDefault(); 
+  
+    const selectElement = document.getElementById('anio');
+    const selectedValue = selectElement.value;
+  
+    
+    console.log('Valor seleccionado:', selectedValue);
+  
+   
+    if (selectedValue !== "") {
+      
+      
+      console.log('Ejecutando la animación de la máquina del tiempo...');
+      
+      
+      const scriptElement = document.createElement('script');
+      scriptElement.src = "js/animacionMaquina.js";
+     
+      document.body.appendChild(scriptElement);
+    }
+  }
+</script>
+
+
+
+<script>
+  function handleFormSubmit(event) {
+    event.preventDefault(); 
+  
+    const selectElement = document.getElementById('anio');
+    const selectedValue = selectElement.value;
+  
+    
+    console.log('Valor seleccionado:', selectedValue);
+  
+    
+    if (selectedValue !== "") {
+      
+      console.log('Ejecutando la animación de la máquina del tiempo...');
+      
+     
+      const scriptElement = document.createElement('script');
+      scriptElement.src = "js/animacionMaquina.js";
+      
+      document.body.appendChild(scriptElement);
+    }
+  }
+</script>
+    
 </html>
