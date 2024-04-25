@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/Estilos.css">
+</head>
+<body>
+
+   <div class="barra">
+    <div class="loader1"></div>
+    <div class="loader"></div>
+   </div>
+   
+   <script>
+    // Función para redireccionar a la página correspondiente después de 5 segundos
+    function redirect(selectedValue) {
+        setTimeout(function() {
+            switch (selectedValue) {
+                case "0":
+                    window.location.href = "Precambrico.html?anio=0";
+                    break;
+                case "1":
+                    window.location.href = "Cretacico.html?anio=1";
+                    break;
+                case "2":
+                    window.location.href = "Pleistoceno.html?anio=2";
+                    break;
+                case "3":
+                    window.location.href = "index.html?anio=3";
+                    break;
+                case "4":
+                    window.location.href = "Futurista.html?anio=4";
+                    break;
+                case "5":
+                    window.location.href = "Postapocaliptico.html?anio=5";
+                    break;
+                default:
+                    // Redireccionar a una pagina de error u otra pagina por defecto si es necesario
+                    window.location.href = "index.html?anio=5"; // Por defecto, redirige a index.html
+            }
+        }, 3000); // Espera 3 segundos antes de redireccionar
+    }
+
+    // Obtener el valor enviado desde el formulario en la página anterior
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedValue = urlParams.get('anio');
+
+    // Redireccionar después de esperar 3 segundos
+    redirect(selectedValue);
+   </script>
+</body>
+</html>

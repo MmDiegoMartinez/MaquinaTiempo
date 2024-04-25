@@ -63,3 +63,74 @@ nav a:hover {
     .formulario button:hover {
       background-color: #0056b3;
     }
+
+
+    /*barra de carga*/
+    .loader {
+      border: 16px solid #f3f3f3;
+      border-top: 16px solid #3498db;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+      margin-bottom: 60px; 
+    }
+    
+    .loader::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border-radius: 50%;
+      box-shadow: inset 0px 0px 20px #3498db;
+    }
+    
+    
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+    
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .barra {
+      width: 100%;
+      height: 100vh; /* Esto establece la altura del div al 100% del viewport */
+      display: flex; /* Usaremos flexbox para centrar el contenido vertical y horizontalmente */
+      flex-direction: column; 
+      justify-content: center; /* Centra horizontalmente el contenido */
+      align-items: center; /* Centra verticalmente el contenido */
+  }
+
+
+
+  .loader1 {
+    width: fit-content;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
+    background: radial-gradient(circle closest-side,#3498DB 94%,#0000) right/calc(200% - 1em) 100%;
+    animation: l24 1s infinite alternate linear;
+    
+  }
+  
+  .loader1::before {
+    content: "Viajando en el tiempo...";
+    line-height: 1em;
+    color: #0000;
+    background: inherit;
+    background-image: radial-gradient(circle closest-side,#fff 94%,#3498DB);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  
+  @keyframes l24 {
+    100% {
+      background-position: left
+    }
+  }
+  
