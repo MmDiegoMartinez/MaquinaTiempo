@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Maquina del Tiempo</title>
-  <script src="js/aframe.min.js"></script>
+  <script src="js/aframe.min2.js"></script>
+  <script src="js/aframe-extras.min.js"></script>
+  <script src="js/aframe-environment-component.min.js"></script>
   <link rel="stylesheet" href="css/Estilos.css">
 </head>
 <body>
@@ -15,7 +17,7 @@
               <select name="anio" id="anio">
                 <option value="0">Periodo Precámbrico</option>
                 <option value="1">Periodo Cretácico</option>
-                <option value="2">Perido Pleistoceno</option>
+                <option value="2">Prehistoria</option>
                 <option value="3">Actualidad</option>
                 <option value="4">Periodo Futurista</option>
                 <option value="5">Periodo Postapocalíptico </option>
@@ -25,14 +27,7 @@
           </div>
     </div>
   <a-scene>
-    <!-- Cielo -->
-    <a-sky color="#87CEEB"></a-sky>
 
-    <!-- Campo infinito -->
-    <a-entity>
-      <a-plane rotation="-90 0 0" height="200" width="200" repeat="100 100" color="#3E8344"></a-plane>
-    </a-entity>
-    <!-- cronometro -->
     <a-assets>
       <a-asset-item id="maquina-modelo" src="Modelos/maquinadeltiempo.glb"></a-asset-item>
     </a-assets>
@@ -57,6 +52,26 @@
         <a-sphere position="-2.81 0.1 -2" radius="0.1" color="#E8BEAC"></a-sphere> 
         <a-sphere position="-3.19 0.1 -2" radius="0.1" color="#E8BEAC"></a-sphere> 
     </a-entity>
+
+
+
+    <a-entity environment="preset: volcano; lighting: none; shadow: none; lightPosition: 0 2.15 0"
+                hide-in-ar-mode></a-entity>
+      
+     
+        
+      <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+      <a-light type="directional"
+               light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+
+               position="-5 3 1.5"></a-light>
+
 
 
   </a-scene>
