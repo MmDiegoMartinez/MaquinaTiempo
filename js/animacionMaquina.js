@@ -34,23 +34,53 @@ function animarMovimiento(callback) {
     // funcion para mover la maquina del tiempo y al viajante al mismo tiempo
     function moverMaquina(callback) {
         var posicionInicialMaquina = { x: 0, y: 3, z: -5 }; // posicion inicial de la maquina del tiempo
-        var posicionFinalMaquina = { x: 0, y: 15, z: -5 }; // posicion final de la maquina del tiempo
+        var posicionFinalMaquina = { x: 0, y: 60, z: -5 }; // posicion final de la maquina del tiempo
         var duracionTotalMaquina = 3000; // Duracion total del movimiento de la maquina del tiempo en milisegundos
         var pasoMaquina = 10; // Intervalo de tiempo entre cada paso de la maquina del tiempo en milisegundos
         var tiempoPasadoMaquina = 0;
 
+        /// Crear una matriz de clones de la máquina
+        var clonesMaximo = 5;
+        var clones = [];
+        for (var i = 0; i < clonesMaximo; i++) {
+            var clon = maquina.cloneNode(true);
+            clon.setAttribute('visible', false);
+            maquina.parentNode.appendChild(clon);
+            clones.push(clon);
+        }
+
         // funcion para mover la maquina del tiempo
         function mover() {
+            var progreso = tiempoPasadoMaquina / duracionTotalMaquina;
             // Calcula la posicion actual de la maquina del tiempo
             var x = posicionInicialMaquina.x + (posicionFinalMaquina.x - posicionInicialMaquina.x) * (tiempoPasadoMaquina / duracionTotalMaquina);
             var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * (tiempoPasadoMaquina / duracionTotalMaquina);
             var z = posicionInicialMaquina.z + (posicionFinalMaquina.z - posicionInicialMaquina.z) * (tiempoPasadoMaquina / duracionTotalMaquina);
 
-            // Actualiza la posicion de la maquina del tiempo
-            maquina.setAttribute('position', x + ' ' + y + ' ' + z);
+            // Actualizar la posición de la máquina principal
+            maquina.setAttribute('position', `${x} ${y} ${z}`);
+
+            var separacion = 6;
+            var duracionUnion = 2000; // Duración en milisegundos para la unión gradual
+            var pasoUnion = duracionUnion / (clones.length * pasoMaquina);
+
+            if (tiempoPasadoMaquina < duracionTotalMaquina - duracionUnion) {
+                for (var i = 0; i < clones.length; i++) {
+                    var offset = (i - (clones.length - 1) / 2) * separacion;
+                    clones[i].setAttribute('position', `${x} ${y + offset} ${z}`);
+                    clones[i].setAttribute('visible', true);
+                }
+            } else {
+                var pasoActual = (tiempoPasadoMaquina - (duracionTotalMaquina - duracionUnion)) / pasoMaquina;
+                for (var i = 0; i < clones.length; i++) {
+                    var offset = (i - (clones.length - 1) / 2) * separacion * (1 - pasoActual / pasoUnion);
+                    clones[i].setAttribute('position', `${x} ${y + offset} ${z}`);
+                    clones[i].setAttribute('visible', true);
+                }
+            }
 
             // Calcula la posicion actual del viajante
-            var vy = posicionFinalViajante.y + (15 - posicionFinalViajante.y) * (tiempoPasadoMaquina / duracionTotalMaquina);
+            var vy = posicionFinalViajante.y + (60 - posicionFinalViajante.y) * (tiempoPasadoMaquina / duracionTotalMaquina);
 
             // Actualiza la posicion del viajante
             viajante.setAttribute('position', posicionFinalViajante.x + ' ' + vy + ' ' + posicionFinalViajante.z);
@@ -62,10 +92,13 @@ function animarMovimiento(callback) {
             if (tiempoPasadoMaquina < duracionTotalMaquina) {
                 setTimeout(mover, pasoMaquina);
             } else {
+                // Unir los clones con la máquina principal
+                for (var i = 0; i < clones.length; i++) {
+                    clones[i].setAttribute('visible', false);
+                }
                 // Cuando la maquina del tiempo llega a su posicion final, desaparece junto con el viajante
                 desvanecerElemento(maquina);
                 desvanecerElemento(viajante);
-               
             }
         }
 
@@ -75,7 +108,6 @@ function animarMovimiento(callback) {
 
     // funcion para desvanecer un elemento gradualmente y mostrar un destello de luz
     function desvanecerElemento(elemento) {
-        
         var opacidad = 1;
         var pasoDesvanecimiento = 0.05;
         var duracionDesvanecimiento = 1000;
@@ -93,18 +125,16 @@ function animarMovimiento(callback) {
 
             if (opacidad > 0) {
                 setTimeout(desvanecer, duracionDesvanecimiento * pasoDesvanecimiento);
-                
             } else {
-                elemento.setAttribute('visible', false); // no sea visible
                 var audio = document.getElementById('audio-maquina');
                 audio.pause();
                 audio.currentTime = 0; // Reinicia el audio al principio para la próxima reproducción
+
+                elemento.setAttribute('visible', false); // no sea visible
                 callback(); // Llama al callback despues de que el destello se desvanezca
-                
             }
-            
         }
-        
+
         // Comienza el desvanecimiento
         desvanecer();
     }
@@ -118,6 +148,7 @@ function reproducirAudio() {
    
     audio.play();
 }
+
 
 // Llama a la funcion para iniciar la animación del movimiento del viajante y la maquina del tiempo
 animarMovimiento(function() {
