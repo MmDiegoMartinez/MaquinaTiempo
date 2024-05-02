@@ -18,9 +18,6 @@
     function redirect(selectedValue) {
         setTimeout(function() {
             switch (selectedValue) {
-                case "0":
-                    window.location.href = "Precambrico.html?anio=0";
-                    break;
                 case "1":
                     window.location.href = "Cretacico.html?anio=1";
                     break;
@@ -28,17 +25,20 @@
                     window.location.href = "Prehistoria.html?anio=2";
                     break;
                 case "3":
-                    window.location.href = "index.html?anio=3";
+                    window.location.href = "AntiguoEgipto.html?anio=3";
                     break;
                 case "4":
-                    window.location.href = "Futurista.html?anio=4";
+                    window.location.href = "index.html?anio=4";
                     break;
                 case "5":
-                    window.location.href = "Postapocaliptico.html?anio=5";
+                    window.location.href = "Futurista.html?anio=5";
+                    break;
+                case "6":
+                    window.location.href = "Postapocaliptico.html?anio=6";
                     break;
                 default:
                     // Redireccionar a una pagina de error u otra pagina por defecto si es necesario
-                    window.location.href = "index.html?anio=5"; // Por defecto, redirige a index.html
+                    window.location.href = "index.html?anio=4"; // Por defecto, redirige a index.html
             }
         }, 3000); // Espera 3 segundos antes de redireccionar
     }
