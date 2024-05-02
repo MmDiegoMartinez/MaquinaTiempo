@@ -1,4 +1,5 @@
 function aterrizarMaquina() {
+    reproducirAudio();
     var viajante = document.getElementById('viajante');
     var maquina = document.querySelector('[gltf-model="#maquina-modelo"]');
     var posicionInicialMaquina = { x: 0, y: 15, z: -5 }; // posicion inicial de la maquina del tiempo
@@ -53,6 +54,11 @@ function aterrizarMaquina() {
                 setTimeout(function() {
                     moverSalida(paso + 1);
                 }, duracionSalida / pasos);
+            } else {
+                
+                var audio = document.getElementById('audio-maquina');
+                audio.pause();
+                audio.currentTime = 0; // Reinicia el audio al principio para la próxima reproducción
             }
         }
     
@@ -62,6 +68,12 @@ function aterrizarMaquina() {
 
     // Comienza el movimiento de la maquina del tiempo
     moverMaquina();
+}
+
+function reproducirAudio() {
+    var audio = document.getElementById('audio-maquina');
+   
+    audio.play();
 }
 
 // Llama a la funcion para iniciar el aterrizaje de la maquina del tiempo

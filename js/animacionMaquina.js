@@ -1,4 +1,5 @@
 function animarMovimiento(callback) {
+    reproducirAudio();
     var viajante = document.getElementById('viajante');
     var maquina = document.querySelector('[gltf-model="#maquina-modelo"]');
     var posicionInicialViajante = { x: 0, y: 0, z: 0 }; // posicion inicial del viajante
@@ -95,7 +96,11 @@ function animarMovimiento(callback) {
                 
             } else {
                 elemento.setAttribute('visible', false); // no sea visible
+                var audio = document.getElementById('audio-maquina');
+                audio.pause();
+                audio.currentTime = 0; // Reinicia el audio al principio para la próxima reproducción
                 callback(); // Llama al callback despues de que el destello se desvanezca
+                
             }
             
         }
@@ -106,6 +111,12 @@ function animarMovimiento(callback) {
 
     // Comienza el movimiento del viajante
     moverViajante();
+}
+
+function reproducirAudio() {
+    var audio = document.getElementById('audio-maquina');
+   
+    audio.play();
 }
 
 // Llama a la funcion para iniciar la animación del movimiento del viajante y la maquina del tiempo
