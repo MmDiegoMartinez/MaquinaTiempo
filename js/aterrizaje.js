@@ -1,80 +1,95 @@
 function aterrizarMaquina() {
     reproducirAudio();
     var viajante = document.getElementById('viajante');
-    var maquina = document.querySelector('[gltf-model="#maquina-modelo"]');
-    var posicionInicialMaquina = { x: 0, y: 15, z: -5 }; // posicion inicial de la maquina del tiempo
-    var posicionFinalMaquina = { x: 0, y: 3, z: -5 }; // posicion final de la maquina del tiempo
-    var duracionTotalMaquina = 3000; // duracion total del movimiento de la maquina del tiempo en milisegundos
-    var pasoMaquina = 10; // Intervalo de tiempo entre cada paso de la maquina del tiempo en milisegundos
-    var tiempoPasadoMaquina = 0;
+    viajante.setAttribute('visible', false); // Oculta el viajante al inicio
 
-    // funcion para mover la maquina del tiempo y el viajante al mismo tiempo
-    function moverMaquina() {
-        // Calcula la posicion actual de la maquina del tiempo
-        var x = posicionInicialMaquina.x + (posicionFinalMaquina.x - posicionInicialMaquina.x) * (tiempoPasadoMaquina / duracionTotalMaquina);
-        var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * (tiempoPasadoMaquina / duracionTotalMaquina);
-        var z = posicionInicialMaquina.z + (posicionFinalMaquina.z - posicionInicialMaquina.z) * (tiempoPasadoMaquina / duracionTotalMaquina);
+    // var maquina = document.getElementById('maquina-completa');
 
-        // Calcular la posicion actual del viajante
-        var vy = 15 + (3 - 15) * (tiempoPasadoMaquina / duracionTotalMaquina);
+    var maquina1 = document.querySelector('[gltf-model="#parte1"]');
+    var maquina2 = document.querySelector('[gltf-model="#parte2"]');
+    var maquina3 = document.querySelector('[gltf-model="#parte3"]');
+    var maquina4 = document.querySelector('[gltf-model="#parte4"]');
 
-        // Actualiza la posicion de la maquina del tiempo
-        maquina.setAttribute('position', x + ' ' + y + ' ' + z);
+    var alturaInicial = 0.4; // Altura inicial de las partes de la máquina del tiempo
+    var alturaFinal = -1.35; // Altura final de las partes de la máquina del tiempo
 
-        // Actualiza la posicion del viajante
-        viajante.setAttribute('position', '3 ' + vy + ' 1.5');
+    // funcion para mover la maquina del tiempo y al viajante al mismo tiempo
+    var partesMaquina = [maquina1, maquina2, maquina3, maquina4]; // Array de las partes de la máquina del tiempo
+    // Recursivamente mueve las partes de la máquina del tiempo
+    function moverParte(index) {
+        var parteActual = partesMaquina[index];
+        var posicionInicialParte = { x: 0, y: alturaInicial, z: 0 };
+        var posicionFinalParte = { x: 0, y: alturaFinal, z: 0 };
+        var duracionTotalParte = 500;
+        var pasoParte = 10;
+        var tiempoPasadoParte = 0;
 
-        // Incrementa el tiempo pasado de la maquina del tiempo
-        tiempoPasadoMaquina += pasoMaquina;
+        function mover() {
+            var x = posicionInicialParte.x + (posicionFinalParte.x - posicionInicialParte.x) * (tiempoPasadoParte / duracionTotalParte);
+            var y = posicionInicialParte.y + (posicionFinalParte.y - posicionInicialParte.y) * (tiempoPasadoParte / duracionTotalParte);
+            var z = posicionInicialParte.z + (posicionFinalParte.z - posicionInicialParte.z) * (tiempoPasadoParte / duracionTotalParte);
 
-        // Si el tiempo pasado de la maquina del tiempo es menor que la duracion total, sigue moviendo
-        if (tiempoPasadoMaquina < duracionTotalMaquina) {
-            setTimeout(moverMaquina, pasoMaquina);
-        } else {
-            // Cuando la maquina del tiempo llega a su posicion final, el viajante sale de la nave
-            salirDeNave();
-        }
-    }
+            parteActual.setAttribute('position', x + ' ' + y + ' ' + z);
 
-    // funcion para que el viajante salga de la nave
-    function salirDeNave() {
-        var duracionSalida = 2000; // duracion de la animacion de salida en milisegundos
-        var pasos = 100; // numero de pasos para la animacion
-        var pasoX = (0 - 3) / pasos; // Paso en el eje X
-        var pasoY = (0 - 0) / pasos; // Paso en el eje Y
-        var pasoZ = (0 - 1.5) / pasos; // Paso en el eje Z
-    
+            tiempoPasadoParte += pasoParte;
 
-        function moverSalida(paso) {
-            if (paso <= pasos) {
-                var x = 3 + paso * pasoX;
-                var y = 0 + paso * pasoY;
-                var z = 1.5 + paso * pasoZ;
-                viajante.setAttribute('position', x + ' ' + y + ' ' + z);
-                setTimeout(function() {
-                    moverSalida(paso + 1);
-                }, duracionSalida / pasos);
+            if (tiempoPasadoParte < duracionTotalParte) {
+                setTimeout(mover, pasoParte);
             } else {
-                
-                var audio = document.getElementById('audio-maquina');
-                audio.pause();
-                audio.currentTime = 0; // Reinicia el audio al principio para la próxima reproducción
+                // Cuando la parte actual ha alcanzado su altura máxima
+                if (index < partesMaquina.length - 1) {
+                    // Si no es la última parte, mover la siguiente parte después de un breve retraso
+                    setTimeout(function() {
+                        moverParte(index + 1);
+                    }, 50);
+                } else {
+                    // Si es la última parte, hacer que el viajante aparezca y salga de la máquina del tiempo
+                    viajante.setAttribute('visible', true);
+                    salirDeNave(viajante);
+                }
             }
         }
-    
-        // se Comienza la animacion de salida
-        moverSalida(1);
+
+        // Comienza el movimiento de la parte actual
+        mover();
     }
 
-    // Comienza el movimiento de la maquina del tiempo
-    moverMaquina();
+    // Comienza moviendo la primera parte
+    moverParte(0);
+}
+
+// Función para que el viajante salga de la nave
+function salirDeNave() {
+    var duracionSalida = 2000; // duracion de la animacion de salida en milisegundos
+    var pasos = 100; // numero de pasos para la animacion
+    var pasoX = (0 - 3) / pasos; // Paso en el eje X
+    var pasoY = (0 - 0) / pasos; // Paso en el eje Y
+    var pasoZ = (0 - 1.5) / pasos; // Paso en el eje Z
+
+    function moverSalida(paso) {
+        if (paso <= pasos) {
+            var x = 3 + paso * pasoX;
+            var y = 0 + paso * pasoY;
+            var z = 1.5 + paso * pasoZ;
+            viajante.setAttribute('position', x + ' ' + y + ' ' + z);
+            setTimeout(function() {
+                moverSalida(paso + 1);
+            }, duracionSalida / pasos);
+        } else {
+            var audio = document.getElementById('audio-maquina');
+            audio.pause();
+            audio.currentTime = 0; // Reinicia el audio al principio para la próxima reproducción
+        }
+    }
+
+    // se Comienza la animacion de salida
+    moverSalida(1);
 }
 
 function reproducirAudio() {
     var audio = document.getElementById('audio-maquina');
-   
     audio.play();
 }
 
-// Llama a la funcion para iniciar el aterrizaje de la maquina del tiempo
+// Llama a la función para iniciar el aterrizaje de la máquina del tiempo
 aterrizarMaquina();
