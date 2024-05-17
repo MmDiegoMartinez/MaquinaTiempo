@@ -31,14 +31,25 @@
     <a-scene>
       <a-camera position="0 2 11"></a-camera>
       <a-assets>
-        <a-asset-item id="maquina-modelo" src="Modelos/maquinadeltiempo.glb"></a-asset-item>
+        
         <a-asset-item id="spinosaurus" src="Modelos/dino-model.glb" response-type="arraybuffer"></a-asset-item>
         <a-asset-item id="trex" id="rex" src="Modelos/T-rex.glb"></a-asset-item>
         <a-asset-item id="Quetzalcoatlus" id="quet" src="Modelos/Quetzalcoatlus.glb"></a-asset-item>
+        <a-asset-item id="parte1" src="Modelos/parte1.glb"></a-asset-item>
+        <a-asset-item id="parte2" src="Modelos/parte2.glb"></a-asset-item>
+        <a-asset-item id="parte3" src="Modelos/parte3.glb"></a-asset-item>
+        <a-asset-item id="parte4" src="Modelos/parte4.glb"></a-asset-item>
       </a-assets>
+    </a-assets>
 
-      <a-entity gltf-model="#maquina-modelo" scale="20 20 20" position="0 15 -5" rotation="0 0 0"></a-entity>
-      <a-entity id="viajante" position="3 15 1.5">
+    <a-entity id="maquina-completa" scale="20 20 20" position="0 20 -5" rotation="0 0 0">
+      <a-entity gltf-model="#parte1" position="0 0 0"></a-entity>
+      <a-entity gltf-model="#parte2" position="0 0 0"></a-entity>
+      <a-entity gltf-model="#parte3" position="0 0 0"></a-entity>
+      <a-entity gltf-model="#parte4" position="0 0 0"></a-entity>
+    </a-entity>
+
+      <a-entity id="viajante" position="3 20 1.5">
         <a-cylinder position="-3 1.35 -2" radius="0.32" height="0.8" rotation="0 90 0" material="src: url(img/ropa.png);" ></a-cylinder> <!-- Cuerpo -->
         <a-cylinder position="-2.81 0.8 -2" radius="0.14" height="0.3" rotation="0 90 0" material="src: url(img/fut/manganiupi.png);"></a-cylinder> 
         <a-cylinder position="-3.19 0.8 -2" radius="0.14" height="0.3" rotation="0 -90 0" material="src: url(img/fut/manganiupi.png);"></a-cylinder> 
