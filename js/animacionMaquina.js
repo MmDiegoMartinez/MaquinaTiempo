@@ -1,9 +1,13 @@
 function animarMovimiento(callback) {
     reproducirAudio();
     var viajante = document.getElementById('viajante');
-    var maquina = document.querySelector('[gltf-model="#maquina-modelo"]');
+    var maquina = document.getElementById('maquina-completa');
+    var maquina1 = document.querySelector('[gltf-model="#parte1"]');
+    var maquina2 = document.querySelector('[gltf-model="#parte2"]');
+    var maquina3 = document.querySelector('[gltf-model="#parte3"]');
+    var maquina4 = document.querySelector('[gltf-model="#parte4"]');
     var posicionInicialViajante = { x: 0, y: 0, z: 0 }; // posicion inicial del viajante
-    var posicionIntermediaViajante = { x: 3, y: 0, z: 1.5 }; // Posicion intermedia del viajante
+    var posicionIntermediaViajante = { x: 3, y: 0.5, z: 1.5 }; // Posicion intermedia del viajante
     var posicionFinalViajante = { x: 3, y: 2, z: 1.5 }; // posicion final del viajante
     var duracionTotalViajante = 3000; // duracion del movimiento del viajante esto en milisegundos
     var pasoViajante = 10; // intervalo de tiempo entre cada paso del viajante en milisegundos
@@ -34,7 +38,7 @@ function animarMovimiento(callback) {
     // funcion para mover la maquina del tiempo y al viajante al mismo tiempo
     function moverMaquina(callback) {
         var posicionInicialMaquina = { x: 0, y: 3, z: -5 }; // posicion inicial de la maquina del tiempo
-        var posicionFinalMaquina = { x: 0, y: 15, z: -5 }; // posicion final de la maquina del tiempo
+        var posicionFinalMaquina = { x: 0, y: 20, z: -5 }; // posicion final de la maquina del tiempo
         var duracionTotalMaquina = 3000; // Duracion total del movimiento de la maquina del tiempo en milisegundos
         var pasoMaquina = 10; // Intervalo de tiempo entre cada paso de la maquina del tiempo en milisegundos
         var tiempoPasadoMaquina = 0;
@@ -50,7 +54,7 @@ function animarMovimiento(callback) {
             maquina.setAttribute('position', x + ' ' + y + ' ' + z);
 
             // Calcula la posicion actual del viajante
-            var vy = posicionFinalViajante.y + (15 - posicionFinalViajante.y) * (tiempoPasadoMaquina / duracionTotalMaquina);
+            var vy = posicionFinalViajante.y + (20 - posicionFinalViajante.y) * (tiempoPasadoMaquina / duracionTotalMaquina);
 
             // Actualiza la posicion del viajante
             viajante.setAttribute('position', posicionFinalViajante.x + ' ' + vy + ' ' + posicionFinalViajante.z);
@@ -68,9 +72,92 @@ function animarMovimiento(callback) {
                
             }
         }
+        //AQUI EMPIZA LA ANIMACION DE ANIMAR POR ROTACION 
+        function moverotacion() {
+            viajante.setAttribute('visible', 'false');
+            // Calcula la posicion actual de la maquina del tiempo
+            var x = posicionInicialMaquina.x + (posicionFinalMaquina.x - posicionInicialMaquina.x) * (tiempoPasadoMaquina / duracionTotalMaquina);
+            var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * (tiempoPasadoMaquina / duracionTotalMaquina);
+            var z = posicionInicialMaquina.z + (posicionFinalMaquina.z - posicionInicialMaquina.z) * (tiempoPasadoMaquina / duracionTotalMaquina);
+            // Aplica la rotación en forma de espiral
+            var rotationY = 360 * (tiempoPasadoMaquina / duracionTotalMaquina);
+            var rotationZ = 360 * (tiempoPasadoMaquina / duracionTotalMaquina);
 
-        // Comienza el movimiento de la maquina del tiempo
-        mover();
+            maquina.setAttribute('position', x + ' ' + y + ' ' + z);
+            maquina.setAttribute('rotation', '0 ' + rotationY + ' ' + rotationZ);
+
+            // Incrementa el tiempo pasado de la maquina del tiempo
+            tiempoPasadoMaquina += pasoMaquina;
+
+            // Si el tiempo pasado de la maquina del tiempo es menor que la duración total, sigue moviendo
+            if (tiempoPasadoMaquina < duracionTotalMaquina) {
+                setTimeout(moverotacion, pasoMaquina);
+            } else {
+                // Cuando la maquina del tiempo llega a su posicion final, desaparece junto con el viajante
+                desvanecerElemento(maquina);
+                desvanecerElemento(viajante);
+            }
+        }
+
+        var partesMaquina = [maquina1, maquina2, maquina3, maquina4]; // Array de las partes de la máquina del tiempo
+        var alturaMaxima = 0.3; // Altura máxima a la que llegarán las partes
+
+        // Recursivamente mueve las partes de la máquina del tiempo
+        function moverParte(index) {
+            viajante.setAttribute('visible', false);
+            var parteActual = partesMaquina[index];
+            var posicionInicialParte = { x: 0, y: -0.85, z: 0 };
+            var posicionFinalParte = { x: 0, y: alturaMaxima, z: 0 };
+            var duracionTotalParte = 1000;
+            var pasoParte = 10;
+            var tiempoPasadoParte = 0;
+
+            function moverp() {
+                var x = posicionInicialParte.x + (posicionFinalParte.x - posicionInicialParte.x) * (tiempoPasadoParte / duracionTotalParte);
+                var y = posicionInicialParte.y + (posicionFinalParte.y - posicionInicialParte.y) * (tiempoPasadoParte / duracionTotalParte);
+                var z = posicionInicialParte.z + (posicionFinalParte.z - posicionInicialParte.z) * (tiempoPasadoParte / duracionTotalParte);
+
+                parteActual.setAttribute('position', x + ' ' + y + ' ' + z);
+
+                tiempoPasadoParte += pasoParte;
+
+                if (tiempoPasadoParte < duracionTotalParte) {
+                    setTimeout(moverp, pasoParte);
+                } else {
+                    // Cuando la parte actual ha alcanzado su altura máxima
+                    if (index < partesMaquina.length - 1) {
+                        // Si no es la última parte, mover la siguiente parte después de un breve retraso
+                        setTimeout(function() {
+                            moverParte(index + 1);
+                        }, 50);
+                    } else {
+                        // Si es la última parte, desaparecer elementos después de un breve retraso
+                        setTimeout(function() {
+                            desvanecerElemento(maquina1);
+                            desvanecerElemento(maquina2);
+                            desvanecerElemento(maquina3);
+                            desvanecerElemento(maquina4);
+                            desvanecerElemento(viajante);
+                        }, 50);
+                    }
+                }
+            }
+
+            // Comienza el movimiento de la parte actual
+            moverp();
+        }
+        
+        var animacionSeleccionada = localStorage.getItem('animacionSeleccionada');
+
+    
+        animacionSeleccionada = parseInt(animacionSeleccionada, 10);
+        if (animacionSeleccionada < 10) {  // 10% de probabilidad para 1
+            mover();
+        } else if (animacionSeleccionada < 55) {  // 45% de probabilidad para 2 (10% + 45% = 55%)
+            moverotacion();
+        } else {  // 45% de probabilidad para 3 (el resto hasta 100%)
+            moverParte(0);
+        }
     }
 
     // funcion para desvanecer un elemento gradualmente y mostrar un destello de luz
