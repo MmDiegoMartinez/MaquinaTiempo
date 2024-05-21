@@ -1,4 +1,8 @@
+var animacionEnCurso = false;
 function aterrizarMaquina() {
+    if (animacionEnCurso) return; // No hacer nada si una animación está en curso
+    animacionEnCurso = true; // Indicar que una animación está en curso
+    document.querySelector('form button').disabled = true; // Deshabilitar el formulario
     reproducirAudio();
     var viajante = document.getElementById('viajante');
     var maquina = document.getElementById('maquina-completa');
@@ -103,19 +107,101 @@ function aterrizarMaquina() {
         // Comienza el movimiento de la parte actual
         moverp();
     }
-    // genera nuemro aleatorio del 1 al 99
-    var rand = Math.floor(Math.random() * 100);
-    localStorage.setItem('animacionSeleccionada', rand);
-    // eligir una funcion basado en probablidad
-    if (rand < 10) { // 10% de probabilidad para 1
-        moverMaquina();
-    } else if (rand < 55) { // 45% de probabilidad para 2 (10% + 45% = 55%)
-        moverotacion();
-    } else { // 45% de probabilidad para 3 (el resto hasta 100%)
-        moverParte(3);
+    var amplitudOscilacion = 1;
+
+    function moverocilacion(){
+        viajante.setAttribute('visible', false);
+        var progreso = tiempoPasadoMaquina / duracionTotalMaquina;
+        var x = posicionInicialMaquina.x + amplitudOscilacion * Math.sin(progreso * Math.PI * 4); // oscilacion en x
+        var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * progreso;
+        var z = posicionInicialMaquina.z + (posicionFinalMaquina.z - posicionInicialMaquina.z) * progreso;
+
+        maquina.setAttribute('position', x + ' ' + y + ' ' + z);
+
+        tiempoPasadoMaquina += pasoMaquina;
+
+        if (tiempoPasadoMaquina < duracionTotalMaquina) {
+            setTimeout(moverocilacion, pasoMaquina);
+        } else {
+            viajante.setAttribute('visible', true);
+            salirDeNave();
+        }
+    }
+
+    function easeOutBounce(t) {
+        if (t < (1 / 2.75)) {
+            return 7.5625 * t * t;
+        } else if (t < (2 / 2.75)) {
+            return 7.5625 * (t -= (1.5 / 2.75)) * t + 0.75;
+        } else if (t < (2.5 / 2.75)) {
+            return 7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375;
+        } else {
+            return 7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375;
+        }
+    }
+
+    function moverebote() {
+        viajante.setAttribute('visible', false);
+        var progreso = tiempoPasadoMaquina / duracionTotalMaquina;
+        var yBounce = easeOutBounce(progreso);
+
+        var x = posicionInicialMaquina.x;
+        var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * yBounce;
+        var z = posicionInicialMaquina.z;
+
+        maquina.setAttribute('position', x + ' ' + y + ' ' + z);
+
+        var vy = posicionFinalMaquina.y + (posicionInicialMaquina.y - posicionFinalMaquina.y) * yBounce;
+        viajante.setAttribute('position', posicionFinalMaquina.x + ' ' + vy + ' ' + posicionFinalMaquina.z);
+
+        tiempoPasadoMaquina += pasoMaquina;
+
+        if (tiempoPasadoMaquina < duracionTotalMaquina) {
+            setTimeout(moverebote, pasoMaquina);
+        } else {
+            salirDeNave();
+        }
+    }
+    var rotacionTotal = 360;
+    function movereje() {
+        viajante.setAttribute('visible', false);
+        var progreso = tiempoPasadoMaquina / duracionTotalMaquina;
+        var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * progreso;
+        var rotacion = rotacionTotal * progreso; // Cálculo de la rotación
+
+        maquina.setAttribute('position', '0 ' + y + ' -5');
+        maquina.setAttribute('rotation', '0 ' + rotacion + ' 0'); // Aplicar rotación
+
+        tiempoPasadoMaquina += pasoMaquina;
+
+        if (tiempoPasadoMaquina < duracionTotalMaquina) {
+            setTimeout(movereje, pasoMaquina);
+        } else {
+            salirDeNave();
+            viajante.setAttribute('visible', true);
+        }
     }
 
 
+    // genera numero aleatorio del 1 al 99
+   var rand = Math.floor(Math.random() * 100);
+    localStorage.setItem('animacionSeleccionada', rand);
+
+    // elegir una funcion basada en probabilidad y porcentaje
+    if (rand < 5) { // 5% 
+        moverMaquina();
+    } else if (rand < 22) { // 17%  (5%+ 17% = 22%)
+        moverotacion();
+    } else if (rand < 47) { // 25%  (22% + 25% =47%)
+        moverParte(3);
+    } else if (rand < 64) { // 17% (47% + 17% =64%)
+        moverocilacion();
+    } else if (rand < 81) { // 17%  (64% + 17% =81%)
+        moverebote();
+    } else { // 19% el resto hasta 100%
+        movereje();
+    }
+   
     // funcion para que el viajante salga de la nave
     function salirDeNave() {
         viajante.setAttribute('visible', true);
@@ -139,7 +225,9 @@ function aterrizarMaquina() {
                 
                 var audio = document.getElementById('audio-maquina');
                 audio.pause();
-                audio.currentTime = 0; // Reinicia el audio al principio para la próxima reproducción
+                audio.currentTime = 0; // Reinicia el audio 
+                animacionEnCurso = false; //indica si la animacion a finalizado
+                document.querySelector('form button').disabled = false; //habilitar el formulario
             }
         }
     

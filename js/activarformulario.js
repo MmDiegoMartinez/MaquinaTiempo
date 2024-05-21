@@ -1,6 +1,7 @@
 function handleFormSubmit(event) {
     event.preventDefault(); //Evita que el formulario haga lo que normalmente hace automaticamente
   
+    if (animacionEnCurso) return; // No hacer nada si una animación está en curso
     const selectElement = document.getElementById('anio');
     const selectedValue = selectElement.value;
   
