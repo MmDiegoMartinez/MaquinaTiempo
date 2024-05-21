@@ -1,4 +1,8 @@
 function animarMovimiento(callback) {
+    if (animacionEnCurso) return; // No hacer nada si una animación está en curso
+    animacionEnCurso = true; // Indicar que una animación está en curso
+    document.querySelector('form button').disabled = true; // Deshabilitar el formulario
+
     reproducirAudio();
     var viajante = document.getElementById('viajante');
     var maquina = document.getElementById('maquina-completa');
@@ -146,18 +150,104 @@ function animarMovimiento(callback) {
             // Comienza el movimiento de la parte actual
             moverp();
         }
-        
-        var animacionSeleccionada = localStorage.getItem('animacionSeleccionada');
-
+        //AQUI EMPIEZA MOVIMOENTO ocilacion
+        var amplitudOscilacion = 1;
     
-        animacionSeleccionada = parseInt(animacionSeleccionada, 10);
-        if (animacionSeleccionada < 10) {  // 10% de probabilidad para 1
-            mover();
-        } else if (animacionSeleccionada < 55) {  // 45% de probabilidad para 2 (10% + 45% = 55%)
-            moverotacion();
-        } else {  // 45% de probabilidad para 3 (el resto hasta 100%)
-            moverParte(0);
+        function moverOscilacio() {
+            viajante.setAttribute('visible', false);
+            var progreso = tiempoPasadoMaquina / duracionTotalMaquina;
+            var x = posicionInicialMaquina.x + amplitudOscilacion * Math.sin(progreso * Math.PI * 4); // oscilación en x
+            var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * progreso;
+            var z = posicionInicialMaquina.z + (posicionFinalMaquina.z - posicionInicialMaquina.z) * progreso;
+    
+            maquina.setAttribute('position', x + ' ' + y + ' ' + z);
+    
+            var vy = posicionFinalViajante.y + (15 - posicionFinalViajante.y) * progreso;
+            viajante.setAttribute('position', posicionFinalViajante.x + ' ' + vy + ' ' + posicionFinalViajante.z);
+    
+            tiempoPasadoMaquina += pasoMaquina;
+    
+            if (tiempoPasadoMaquina < duracionTotalMaquina) {
+                setTimeout(moverOscilacio, pasoMaquina);
+            } else {
+                desvanecerElemento(maquina);
+                desvanecerElemento(viajante);
+            }
         }
+        function easeOutBounce(t) {
+            if (t < (1 / 2.75)) {
+                return 7.5625 * t * t;
+            } else if (t < (2 / 2.75)) {
+                return 7.5625 * (t -= (1.5 / 2.75)) * t + 0.75;
+            } else if (t < (2.5 / 2.75)) {
+                return 7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375;
+            } else {
+                return 7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375;
+            }
+        }
+
+        function moverebote() {
+            viajante.setAttribute('visible', false);
+            var progreso = tiempoPasadoMaquina / duracionTotalMaquina;
+            var yBounce = easeOutBounce(progreso);
+
+            var x = posicionInicialMaquina.x;
+            var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * yBounce;
+            var z = posicionInicialMaquina.z;
+
+            maquina.setAttribute('position', x + ' ' + y + ' ' + z);
+
+
+            tiempoPasadoMaquina += pasoMaquina;
+
+            if (tiempoPasadoMaquina < duracionTotalMaquina) {
+                setTimeout( moverebote, pasoMaquina);
+            } else {
+                desvanecerElemento(maquina);
+                desvanecerElemento(viajante);
+            }
+        }
+
+
+        var rotacionTotal = 360; // Rotación completa en grados
+
+    function movereje() {
+        viajante.setAttribute('visible', false);
+        var progreso = tiempoPasadoMaquina / duracionTotalMaquina;
+        var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * progreso;
+        var rotacion = rotacionTotal * progreso; // Calculo de la rotacion
+
+        maquina.setAttribute('position', '0 ' + y + ' -5');
+        maquina.setAttribute('rotation', '0 ' + rotacion + ' 0'); // Aplicar rotación
+
+
+        tiempoPasadoMaquina += pasoMaquina;
+
+        if (tiempoPasadoMaquina < duracionTotalMaquina) {
+            setTimeout(movereje, pasoMaquina);
+        } else {
+            desvanecerElemento(maquina);
+            desvanecerElemento(viajante);
+        }
+    }
+    var animacionSeleccionada = localStorage.getItem('animacionSeleccionada');
+
+    animacionSeleccionada = parseInt(animacionSeleccionada, 10);
+
+    if (animacionSeleccionada < 5) { // 5% de probabilidad para moverMaquina()
+        mover();
+    } else if (animacionSeleccionada < 22) { // 17% de probabilidad para moverotacion() (5% + 17% = 22%)
+        moverotacion();
+    } else if (animacionSeleccionada < 47) { // 25% de probabilidad para moverParte(3) (22% + 25% = 47%)
+        moverParte(0);
+    } else if (animacionSeleccionada < 64) { // 17% de probabilidad para moverOscilacion() (47% + 17% = 64%)
+        moverOscilacio();
+    } else if (animacionSeleccionada < 81) {  // 17% de probabilidad para moverebote() (64% + 17% = 81%)
+        moverebote();
+    } else { // 19% de probabilidad para movereje() (el resto hasta 100%)
+        movereje();
+    }
+
     }
 
     // funcion para desvanecer un elemento gradualmente y mostrar un destello de luz
@@ -186,6 +276,8 @@ function animarMovimiento(callback) {
                 var audio = document.getElementById('audio-maquina');
                 audio.pause();
                 audio.currentTime = 0; // Reinicia el audio al principio para la próxima reproducción
+                animacionEnCurso = false; // Indicar que la animación ha finalizado
+                document.querySelector('form button').disabled = false; // Habilitar el formulario
                 callback(); // Llama al callback despues de que el destello se desvanezca
                 
             }
