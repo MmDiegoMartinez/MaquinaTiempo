@@ -1,7 +1,7 @@
 function animarMovimiento(callback) {
-    if (animacionEnCurso) return; // No hacer nada si una animación está en curso
-    animacionEnCurso = true; // Indicar que una animación está en curso
-    document.querySelector('form button').disabled = true; // Deshabilitar el formulario
+    if (animacionEnCurso) return; //  No hacer nada si una animacion este en curso
+    animacionEnCurso = true; //aqui indica si la animacion esta en curso
+    document.querySelector('form button').disabled = true; //desahibilta formulario
 
     reproducirAudio();
     var viajante = document.getElementById('viajante');
@@ -209,16 +209,16 @@ function animarMovimiento(callback) {
         }
 
 
-        var rotacionTotal = 360; // Rotación completa en grados
+        var rotacionTotal = 360; // Rotacion completa en grados
 
     function movereje() {
         viajante.setAttribute('visible', false);
         var progreso = tiempoPasadoMaquina / duracionTotalMaquina;
         var y = posicionInicialMaquina.y + (posicionFinalMaquina.y - posicionInicialMaquina.y) * progreso;
-        var rotacion = rotacionTotal * progreso; // Calculo de la rotacion
+        var rotacion = rotacionTotal * progreso; // calculo de la rotacion
 
         maquina.setAttribute('position', '0 ' + y + ' -5');
-        maquina.setAttribute('rotation', '0 ' + rotacion + ' 0'); // Aplicar rotación
+        maquina.setAttribute('rotation', '0 ' + rotacion + ' 0'); // aplicar rotacion
 
 
         tiempoPasadoMaquina += pasoMaquina;
@@ -234,17 +234,17 @@ function animarMovimiento(callback) {
 
     animacionSeleccionada = parseInt(animacionSeleccionada, 10);
 
-    if (animacionSeleccionada < 5) { // 5% de probabilidad para moverMaquina()
+    if (animacionSeleccionada < 5) { // 5% 
         mover();
-    } else if (animacionSeleccionada < 22) { // 17% de probabilidad para moverotacion() (5% + 17% = 22%)
+    } else if (animacionSeleccionada < 22) { // 17%  (5%+ 17% = 22%)
         moverotacion();
-    } else if (animacionSeleccionada < 47) { // 25% de probabilidad para moverParte(3) (22% + 25% = 47%)
+    } else if (animacionSeleccionada < 47) { // 25%  (22% + 25% =47%)
         moverParte(0);
-    } else if (animacionSeleccionada < 64) { // 17% de probabilidad para moverOscilacion() (47% + 17% = 64%)
+    } else if (animacionSeleccionada < 64) { // 17%  (47% + 17% =64%)
         moverOscilacio();
-    } else if (animacionSeleccionada < 81) {  // 17% de probabilidad para moverebote() (64% + 17% = 81%)
+    } else if (animacionSeleccionada < 81) {  // 17%  (64% + 17% =81%)
         moverebote();
-    } else { // 19% de probabilidad para movereje() (el resto hasta 100%)
+    } else { // 19%  el resto hasta 100%
         movereje();
     }
 
@@ -276,8 +276,8 @@ function animarMovimiento(callback) {
                 var audio = document.getElementById('audio-maquina');
                 audio.pause();
                 audio.currentTime = 0; // Reinicia el audio al principio para la próxima reproducción
-                animacionEnCurso = false; // Indicar que la animación ha finalizado
-                document.querySelector('form button').disabled = false; // Habilitar el formulario
+                animacionEnCurso = false; // indica si la animacion a finalizado
+                document.querySelector('form button').disabled = false; // habilitar el formulario
                 callback(); // Llama al callback despues de que el destello se desvanezca
                 
             }
