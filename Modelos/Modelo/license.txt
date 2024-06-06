@@ -1,0 +1,11 @@
+Model Information:
+* title:	Warhammer 40k Battle Barge
+* source:	https://sketchfab.com/3d-models/warhammer-40k-battle-barge-f5496c1ddace4313b2af524b0f3b36a0
+* author:	taumich (https://sketchfab.com/taumich)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Warhammer 40k Battle Barge" (https://sketchfab.com/3d-models/warhammer-40k-battle-barge-f5496c1ddace4313b2af524b0f3b36a0) by taumich (https://sketchfab.com/taumich) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

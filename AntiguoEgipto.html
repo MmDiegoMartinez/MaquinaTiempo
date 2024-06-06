@@ -44,6 +44,8 @@
       <a-entity gltf-model="#parte4" position="0 0 0"></a-entity>
     </a-entity>
 
+   
+
     <a-entity id="viajante" position="3 20 1.5">
       <a-cylinder position="-3 1.35 -2" radius="0.32" height="0.8" rotation="0 90 0" material="src: url(img/ropa.png);"></a-cylinder> <!-- Cuerpo -->
       <a-cylinder position="-2.81 0.8 -2" radius="0.14" height="0.3" rotation="0 90 0" material="src: url(img/fut/manganiupi.png);"></a-cylinder> 
@@ -61,7 +63,7 @@
       <a-sphere position="-3.19 0.1 -2" radius="0.1" color="#E8BEAC"></a-sphere> 
     </a-entity>
 
-    <a-entity environment="preset: egypt; lighting: none; shadow: none; lightPosition: 0 2.15 0" hide-in-ar-mode></a-entity>
+    <a-entity environment="preset: egypt; skyType: gradient; ground: hills; groundTexture: walkernoise; groundColor: #664735; groundColor2: #6c4b39; dressing: pyramids; dressingAmount: 10; dressingScale: 5;"></a-entity>
 
     <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
     <a-light type="directional"

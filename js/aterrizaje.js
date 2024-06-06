@@ -85,6 +85,8 @@ function aterrizarMaquina() {
             var y = posicionInicialParte.y + (posicionFinalParte.y - posicionInicialParte.y) * (tiempoPasadoParte / duracionTotalParte);
             var z = posicionInicialParte.z + (posicionFinalParte.z - posicionInicialParte.z) * (tiempoPasadoParte / duracionTotalParte);
 
+            var rotacion = 360 * (tiempoPasadoParte / duracionTotalParte);
+            parteActual.setAttribute('rotation', '0 ' + rotacion + ' 0'); 
             parteActual.setAttribute('position', x + ' ' + y + ' ' + z);
             tiempoPasadoParte += pasoParte;
 
