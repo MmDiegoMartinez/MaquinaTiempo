@@ -73,6 +73,7 @@ function animarMovimiento(callback) {
                 // Cuando la maquina del tiempo llega a su posicion final, desaparece junto con el viajante
                 desvanecerElemento(maquina);
                 desvanecerElemento(viajante);
+                reproducirAudio2();
                
             }
         }
@@ -100,6 +101,7 @@ function animarMovimiento(callback) {
                 // Cuando la maquina del tiempo llega a su posicion final, desaparece junto con el viajante
                 desvanecerElemento(maquina);
                 desvanecerElemento(viajante);
+                reproducirAudio2();
             }
         }
 
@@ -145,6 +147,7 @@ function animarMovimiento(callback) {
                             desvanecerElemento(maquina3);
                             desvanecerElemento(maquina4);
                             desvanecerElemento(viajante);
+                            reproducirAudio2();
                         }, 50);
                     }
                 }
@@ -176,6 +179,7 @@ function animarMovimiento(callback) {
             } else {
                 desvanecerElemento(maquina);
                 desvanecerElemento(viajante);
+                reproducirAudio2();
             }
         }
         function easeOutBounce(t) {
@@ -209,6 +213,7 @@ function animarMovimiento(callback) {
             } else {
                 desvanecerElemento(maquina);
                 desvanecerElemento(viajante);
+                reproducirAudio2();
             }
         }
 
@@ -232,6 +237,7 @@ function animarMovimiento(callback) {
         } else {
             desvanecerElemento(maquina);
             desvanecerElemento(viajante);
+            reproducirAudio2();
         }
     }
     var animacionSeleccionada = localStorage.getItem('animacionSeleccionada');
@@ -276,6 +282,7 @@ function animarMovimiento(callback) {
                 setTimeout(desvanecer, duracionDesvanecimiento * pasoDesvanecimiento);
                 
             } else {
+                
                 elemento.setAttribute('visible', false); // no sea visible
                 var audio = document.getElementById('audio-maquina');
                 audio.pause();
@@ -300,6 +307,14 @@ function reproducirAudio() {
     var audio = document.getElementById('audio-maquina');
    
     audio.play();
+}
+
+function reproducirAudio2() {
+    var audio = document.getElementById('audio-maquina2');
+    
+    setTimeout(function() {
+        audio.play();
+    }, 400); // 100 milisegundos = 0.1 segundos
 }
 
 // Llama a la funcion para iniciar la animación del movimiento del viajante y la maquina del tiempo
