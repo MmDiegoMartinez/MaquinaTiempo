@@ -105,7 +105,7 @@ function animarMovimiento(callback) {
 
         var partesMaquina = [maquina1, maquina2, maquina3, maquina4]; // Array de las partes de la máquina del tiempo
         var alturaMaxima = 0.3; // Altura máxima a la que llegarán las partes
-
+        
         // Recursivamente mueve las partes de la máquina del tiempo
         function moverParte(index) {
             viajante.setAttribute('visible', false);
@@ -115,16 +115,19 @@ function animarMovimiento(callback) {
             var duracionTotalParte = 1000;
             var pasoParte = 10;
             var tiempoPasadoParte = 0;
-
+        
             function moverp() {
                 var x = posicionInicialParte.x + (posicionFinalParte.x - posicionInicialParte.x) * (tiempoPasadoParte / duracionTotalParte);
                 var y = posicionInicialParte.y + (posicionFinalParte.y - posicionInicialParte.y) * (tiempoPasadoParte / duracionTotalParte);
                 var z = posicionInicialParte.z + (posicionFinalParte.z - posicionInicialParte.z) * (tiempoPasadoParte / duracionTotalParte);
-
+        
+                var rotacion = 360 * (tiempoPasadoParte / duracionTotalParte);
+        
                 parteActual.setAttribute('position', x + ' ' + y + ' ' + z);
-
+                parteActual.setAttribute('rotation', '0 ' + rotacion + ' 0'); // Añadir rotación
+        
                 tiempoPasadoParte += pasoParte;
-
+        
                 if (tiempoPasadoParte < duracionTotalParte) {
                     setTimeout(moverp, pasoParte);
                 } else {
@@ -146,10 +149,11 @@ function animarMovimiento(callback) {
                     }
                 }
             }
-
+        
             // Comienza el movimiento de la parte actual
             moverp();
         }
+        
         //AQUI EMPIEZA MOVIMOENTO ocilacion
         var amplitudOscilacion = 1;
     

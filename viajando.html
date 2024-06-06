@@ -6,9 +6,26 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/Estilos.css">
 </head>
+ <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        img {
+            position: absolute;
+            width: 100px; /* Adjust size as needed */
+            height: auto;
+            transition: filter 0.2s;
+        }
+        .flash {
+            filter: brightness(2);
+        }
+    </style>
 <body>
-
+    
    <div class="barra">
+    <img src="img/Maquina.png" id="bouncingImage">
     <div class="loader1"></div>
     <div class="loader"></div>
    </div>
@@ -49,6 +66,43 @@
 
     // Redireccionar después de esperar 3 segundos
     redirect(selectedValue);
+
+    //Animacion de la maquina
+    const image = document.getElementById('bouncingImage');
+        const speed = 5; // Speed of the image movement
+        let dx = speed;
+        let dy = speed;
+        let x = Math.random() * (window.innerWidth - image.width);
+        let y = Math.random() * (window.innerHeight - image.height);
+
+        function moveImage() {
+            x += dx;
+            y += dy;
+
+            if (x + image.width >= window.innerWidth || x <= 0) {
+                dx = -dx;
+                flashImage();
+            }
+
+            if (y + image.height >= window.innerHeight || y <= 0) {
+                dy = -dy;
+                flashImage();
+            }
+
+            image.style.left = x + 'px';
+            image.style.top = y + 'px';
+
+            requestAnimationFrame(moveImage);
+        }
+
+        function flashImage() {
+            image.classList.add('flash');
+            setTimeout(() => {
+                image.classList.remove('flash');
+            }, 100);
+        }
+
+        moveImage();
    </script>
    <audio id="audio" src="Audios/Sonido de viaje en el tiempo.mp3"></audio>
    <script src="js/sonidos.js"></script>

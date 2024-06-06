@@ -47,9 +47,29 @@
       <a-asset-item id="parte2" src="Modelos/parte2.glb"></a-asset-item>
       <a-asset-item id="parte3" src="Modelos/parte3.glb"></a-asset-item>
       <a-asset-item id="parte4" src="Modelos/parte4.glb"></a-asset-item>
+      <a-asset-item id="nave" src="Modelos/Modelo/scene.gltf"></a-asset-item> 
+      <a-asset-item id="robot" src="Modelos/robot_operator.glb"></a-asset-item> 
+
     </a-assets>
   </a-assets>
+  <a-entity gltf-model="#nave" position="0 45 -150" scale="5 5 5" 
+  animation="property: position; to: 0 45 150; dur: 30000; easing: linear; loop: true"></a-entity>
+  
+  <a-entity gltf-model="#nave" position="-80 60 0" scale="5 5 5" rotation="0 90 0"
+  animation="property: position; to: 150 60 0; dur: 50000; easing: linear; loop: true"></a-entity>
 
+  <a-entity gltf-model="#nave" position="150 75 10" scale="5 5 5" rotation="0 -90 0"
+  animation="property: position; to: -150 60 10; dur: 90000; easing: linear; loop: true"></a-entity>
+
+  <a-entity gltf-model="#robot" position="-100 0 -50" scale="5 5 5" rotation="0 0 0"
+  animation="property: position; to: 150 0 -50; dur: 95000; easing: linear; loop: true"></a-entity>
+
+  <a-entity gltf-model="#robot" position="100 0 -40" scale="5 5 5" rotation="0 180 0"
+  animation="property: position; to: -150 0 -40; dur: 105000; easing: linear; loop: true"></a-entity>
+ 
+  
+  <a-entity gltf-model="#robot" position="0 0 -10 " scale="5 5 5" rotation=" 0 -90 0"></a-entity>
+  
   <a-entity id="maquina-completa" scale="20 20 20" position="0 20 -5" rotation="0 0 0">
     <a-entity gltf-model="#parte1" position="0 0 0"></a-entity>
     <a-entity gltf-model="#parte2" position="0 0 0"></a-entity>
@@ -80,4 +100,34 @@
   <script src="js/activarformulario.js"></script>
   <script src="js/sonidos.js"></script>
 </body>
+
+<script>
+  AFRAME.registerComponent('loop-animation', {
+    init: function () {
+      const el = this.el;
+
+      const animate = () => {
+        el.setAttribute('animation', {
+          property: 'position',
+          to: '0 45 100',
+          dur: 20000,
+          easing: 'linear',
+          loop: false
+        });
+
+        el.addEventListener('animationcomplete', function () {
+          el.setAttribute('position', '0 45 -100'); // Reset position
+          animate(); // Restart animation
+        }, { once: true });
+      };
+
+      animate();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('#nave').setAttribute('loop-animation', '');
+  });
+</script>
+
 </html>
