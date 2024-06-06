@@ -96,6 +96,7 @@
   </a-scene>
   <audio id="audio" src="Audios/futurista_1.mp3"></audio>
   <audio id="audio-maquina" src="Audios/maquinatiempo.mp3"></audio>
+  <audio id="audio-maquina2" src="Audios/desaparecer.mp3"></audio>
   <script src="js/aterrizaje.js"></script>
   <script src="js/activarformulario.js"></script>
   <script src="js/sonidos.js"></script>
@@ -116,8 +117,8 @@
         });
 
         el.addEventListener('animationcomplete', function () {
-          el.setAttribute('position', '0 45 -100'); // Reset position
-          animate(); // Restart animation
+          el.setAttribute('position', '0 45 -100'); 
+          animate(); 
         }, { once: true });
       };
 
