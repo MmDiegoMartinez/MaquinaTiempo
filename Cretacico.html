@@ -29,7 +29,7 @@
     </div>
 
     <a-scene>
-      <a-camera position="0 2 11"></a-camera>
+      <a-camera position="-5 2 15"></a-camera>
       <a-assets>
         
         <a-asset-item id="spinosaurus" src="Modelos/dino-model.glb" response-type="arraybuffer"></a-asset-item>
@@ -69,7 +69,8 @@
       <a-entity gltf-model="#trex" id="rex" scale="40 40 40" position="4 0 10" rotation="0 150 0"></a-entity>
       <a-entity gltf-model="#trex" id="rex" scale="40 40 40" position="-15 0 -2" rotation="0 75 0"></a-entity>
       <a-entity gltf-model="#Quetzalcoatlus" id="quet" scale="0.01 0.01 0.01" position="0 30 0" rotation="0 180 0"></a-entity>
-      <a-entity gltf-model="#Quetzalcoatlus" id="quet2" scale="0.01 0.01 0.01" position="-21 8.2 4" rotation="0 0 0"></a-entity>
+      <a-entity gltf-model="#Quetzalcoatlus" id="quet2" scale="0.01 0.01 0.01" position="-150 0 0" rotation="0 0 0"
+      animation="property: position; to: 150 30 0; dur: 30000; easing: linear; loop: true"></a-entity>
 
       <a-entity environment="preset: forest; skyType: atmosphere; ground: hills; groundColor: #65533e; groundColor2: #887a51; dressing: trees; dressingAmount: 50; dressingScale: 3;"></a-entity>
 

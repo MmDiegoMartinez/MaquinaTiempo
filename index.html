@@ -27,7 +27,7 @@
     </div>
   </div>
   <a-scene>
-    <a-camera position="-5 2 18"></a-camera>
+    <a-camera position="-5 2 30"></a-camera>
     <!-- Cielo -->
     <a-entity environment="preset: starry; lighting: none; shadow: none; lightPosition: 0 2.15 0" hide-in-ar-mode></a-entity>
 
@@ -51,6 +51,12 @@
         <a-asset-item id="casa" src="Modelos/casa.glb"></a-asset-item>
       </a-assets>
     </a-assets>
+
+    <a-obj-model src="Modelos/FFGLOBJ.obj" position="0 2 -150" scale="1 1 1" rotation ="-90 0 0" color = "white"  
+    animation="property: position; to: 0 45 150; dur: 30000; easing: linear; loop: true"></a-obj-model>
+
+    <a-obj-model src="Modelos/lowpoly_bird.obj" position="12 7 12" scale="0.08 0.08 0.08" rotation ="0 0 0" color="#10E2AF" ></a-obj-model>
+    <a-obj-model src="Modelos/Bench.obj" position="5 0 20" scale="0.008 0.008 0.008" rotation ="0 -90 0" color="#A25E07" ></a-obj-model>
 
     <a-entity id="maquina-completa" scale="20 20 20" position="0 20 -5" rotation="0 0 0">
       <a-entity gltf-model="#parte1" position="0 0 0"></a-entity>
